@@ -7,4 +7,5 @@ from oa_qian import app
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-app.run(host='localhost', port=9123, debug=True)
+if __name__ == '__main__':
+    app.run(host='localhost', port=9123, debug=True)
