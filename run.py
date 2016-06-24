@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 #重新设置编码
 import sys
-from oa_qian import app
+from app.oa_qian import app
 
 reload(sys)
 sys.setdefaultencoding('utf8')

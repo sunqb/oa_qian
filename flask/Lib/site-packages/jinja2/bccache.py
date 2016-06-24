@@ -16,8 +16,8 @@
 """
 from os import path, listdir
 import os
-import sys
 import stat
+import sys
 import errno
 import marshal
 import tempfile
@@ -88,12 +88,7 @@ class Bucket(object):
         if self.checksum != checksum:
             self.reset()
             return
-        # if marshal_load fails then we need to reload
-        try:
-            self.code = marshal_load(f)
-        except (EOFError, ValueError, TypeError):
-            self.reset()
-            return
+        self.code = marshal_load(f)
 
     def write_bytecode(self, f):
         """Dump the bytecode into the file or file like object passed."""
@@ -217,10 +212,6 @@ class FileSystemBytecodeCache(BytecodeCache):
         self.pattern = pattern
 
     def _get_default_cache_dir(self):
-        def _unsafe_dir():
-            raise RuntimeError('Cannot determine safe temp directory.  You '
-                               'need to explicitly provide one.')
-
         tmpdir = tempfile.gettempdir()
 
         # On windows the temporary directory is used specific unless
@@ -228,32 +219,23 @@ class FileSystemBytecodeCache(BytecodeCache):
         if os.name == 'nt':
             return tmpdir
         if not hasattr(os, 'getuid'):
-            _unsafe_dir()
+            raise RuntimeError('Cannot determine safe temp directory.  You '
+                               'need to explicitly provide one.')
 
         dirname = '_jinja2-cache-%d' % os.getuid()
         actual_dir = os.path.join(tmpdir, dirname)
-
         try:
-            os.mkdir(actual_dir, stat.S_IRWXU)
-        except OSError as e:
-            if e.errno != errno.EEXIST:
-                raise
-        try:
-            os.chmod(actual_dir, stat.S_IRWXU)
-            actual_dir_stat = os.lstat(actual_dir)
-            if actual_dir_stat.st_uid != os.getuid() \
-               or not stat.S_ISDIR(actual_dir_stat.st_mode) \
-               or stat.S_IMODE(actual_dir_stat.st_mode) != stat.S_IRWXU:
-                _unsafe_dir()
+            os.mkdir(actual_dir, stat.S_IRWXU) # 0o700
         except OSError as e:
             if e.errno != errno.EEXIST:
                 raise
 
         actual_dir_stat = os.lstat(actual_dir)
         if actual_dir_stat.st_uid != os.getuid() \
-           or not stat.S_ISDIR(actual_dir_stat.st_mode) \
-           or stat.S_IMODE(actual_dir_stat.st_mode) != stat.S_IRWXU:
-            _unsafe_dir()
+                or not stat.S_ISDIR(actual_dir_stat.st_mode) \
+                or stat.S_IMODE(actual_dir_stat.st_mode) != stat.S_IRWXU:
+            raise RuntimeError('Temporary directory \'%s\' has an incorrect '
+	                       'owner, permissions, or type.' % actual_dir)
 
         return actual_dir
 
