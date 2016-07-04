@@ -1,0 +1,1 @@
+@"E:\newer_data\dataD\python_project_collection\oa_qian\flask\Scripts\python.exe" "E:\newer_data\dataD\python_project_collection\oa_qian\flask\Scripts\markdown_py" %*
