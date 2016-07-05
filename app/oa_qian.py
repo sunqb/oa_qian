@@ -15,16 +15,19 @@ app = Flask(__name__)
 def home():
     return '<h1>Home</h1>'
 
-@app.route('/signin', methods=['GET'])
+@app.route('/sign', methods=['GET'])
 def singnin_form():
-    return '''<form action="/signin" method="post">
-              <p><input name="username"></p>
-              <p><input name="password" type="password"></p>
-              <p><button type="submit">Sign In</button></p>
+    return '''<form action="/sign" method="post">
+              <p>域账号 <input name="username" /></p>
+              <p>密码 <input name="password" type="password" /></p>
+              <p>动态密钥 <input name="dynamic_key" /></p>
+              <p><label><input name="sign_type" type="radio" value="1" />签到 </label> 
+<label><input name="sign_type" type="radio" value="0" />签退 </label> </p>
+              <p><button type="submit">Submit</button></p>
             '''
 
-@app.route('/signin', methods=['POST'])
-def signin():
+@app.route('/sign', methods=['POST'])
+def sign_add():
     # 需要从request对象读取表单内容：
     if request.form['username']=='admin' and request.form['password']=='password':
         return '<h3>Hello, admin!</h3>'
