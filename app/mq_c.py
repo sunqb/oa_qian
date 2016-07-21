@@ -16,5 +16,6 @@ def consumer_msg(serverlist):
                          bootstrap_servers=[serverlist])
     for message in consumer:
         print message.value
+
 if __name__ == '__main__':
     consumer_msg('kafka.sunqb.com:9092')
