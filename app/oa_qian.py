@@ -15,16 +15,16 @@ app = Flask(__name__)
 #首页
 @app.route('/',methods=['GET', 'POST'])
 def home():
-    return '''<h1>欢迎使用OA考勤系统</h1><br/><a href='/sign'>签到</a><br/><br/><a href='/unsign'>签退</a>'''
+    return '''<h1 style='text-align:center'>欢迎使用OA考勤系统</h1><br/><p style='text-align:center'><a  href='/sign'>签到</a></p><p style='text-align:center'><a href='/unsign'>签退</a></p>'''
 
 #跳转到签到页
 @app.route('/sign', methods=['GET'])
 def singnin_form():
     return '''<form action="/sign" method="post">
               <h3 style="text-align:center">签到页</3>
-              <p>域账号 <input name="username" /></p>
-              <p>密码 <input name="password" type="password" /></p>
-              <p>动态密钥 <input name="key" /></p>
+              <p>账号&nbsp&nbsp<input name="username" /></p>
+              <p>密码&nbsp&nbsp<input name="password" type="password" /></p>
+              <p>密钥&nbsp&nbsp<input name="key" /></p>
               <p><button type="submit">Submit</button></p>
             '''
 

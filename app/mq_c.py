@@ -15,7 +15,7 @@ def consumer_msg(serverlist):
                          group_id='my-group',
                          bootstrap_servers=[serverlist])
     for message in consumer:
-        print message.value
+        print bytes.decode(message.value)
 
 if __name__ == '__main__':
     consumer_msg('kafka.sunqb.com:9092')

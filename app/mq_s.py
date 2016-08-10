@@ -20,13 +20,14 @@ class Mq_s(object):
     def producer_msg(self):
         try:
             producer = KafkaProducer(bootstrap_servers=[self.serverlist])
-            producer.send('oa_qian', str.encode(self.msg))
+            producer.send('oa_qian', (self.msg).encode("utf-8"))
             producer.flush()
             producer.close(timeout=60)
             return "success"
-        except:
+        except Exception as e:
+            print e
             return "error"
 
 if __name__ == '__main__':
-    mq_s = Mq_s('kafka.sunqb.com:9092', 'sunqingbiao;sun;890897')
+    mq_s = Mq_s('kafka.sunqb.com:9092', 'sunqingbiao;sun;890897;1')
     mq_s.producer_msg()
