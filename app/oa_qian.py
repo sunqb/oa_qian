@@ -7,6 +7,7 @@ from flask import request
 from flask import render_template
 from mq_s import Mq_s
 
+#编码
 reload(sys)
 sys.setdefaultencoding('utf8')
 

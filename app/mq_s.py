@@ -10,11 +10,8 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 # 日志配置
-log.basicConfig(level=logging.DEBUG,
-                format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
-                datefmt='%a, %d %b %Y %H:%M:%S',
-                filename='/oalog/oa.log',
-                filemode='w')
+logger = log.getLogger()
+logger.setLevel(log.DEBUG)
 
 
 class Mq_s(object):
@@ -30,7 +27,7 @@ class Mq_s(object):
             producer.close(timeout=60)
             return "success"
         except Exception as e:
-            logging.error(e)
+            logger.error(e)
             return "error"
 
 # if __name__ == '__main__':
