@@ -16,7 +16,13 @@ def consumer_msg(serverlist):
                              group_id='my-group',
                              bootstrap_servers=[serverlist])
     for message in consumer:
-        print bytes.decode(message.value)
+        msg = bytes.decode(message.value)
+        msglist = msg.split(";")
+        username = msglist[0]
+        password = msglist[1]
+        key = msglist[2]
+        type = msglist[3]
+        # TODO 调用签到代码，这里需要将生产者配置为必须返回ack模式，否则无法收到客户端回执
 
 
 if __name__ == '__main__':
