@@ -5,33 +5,61 @@ import sys
 from flask import Flask
 from flask import request
 from flask import render_template
+from mq_s import Mq_s
 
 reload(sys)
 sys.setdefaultencoding('utf8')
 
 app = Flask(__name__)
 
+#首页
 @app.route('/',methods=['GET', 'POST'])
 def home():
-    return '<h1>Home</h1>'
+    return '''<h1>欢迎使用OA考勤系统</h1><br/><a href='/sign'>签到</a><br/><br/><a href='/unsign'>签退</a>'''
 
+#跳转到签到页
 @app.route('/sign', methods=['GET'])
 def singnin_form():
     return '''<form action="/sign" method="post">
+              <h3 style="text-align:center">签到页</3>
               <p>域账号 <input name="username" /></p>
               <p>密码 <input name="password" type="password" /></p>
-              <p>动态密钥 <input name="dynamic_key" /></p>
-              <p><label><input name="sign_type" type="radio" value="1" />签到 </label> 
-<label><input name="sign_type" type="radio" value="0" />签退 </label> </p>
+              <p>动态密钥 <input name="key" /></p>
               <p><button type="submit">Submit</button></p>
             '''
 
+#签到
 @app.route('/sign', methods=['POST'])
-def sign_add():
+def sign_in():
     # 需要从request对象读取表单内容：
-    if request.form['username']=='admin' and request.form['password']=='password':
-        return '<h3>Hello, admin!</h3>'
-    return '<h3>Bad username or password.</h3>'
+    username = request.form['username']
+    password = request.form['password']
+    key = request.form['key']
+    mq_s = Mq_s('kafka.sunqb.com:9092', username+';'+password+';'+key+';1')
+    print mq_s.producer_msg()
+    return '''<h3>签到成功，<a href='/'>点此返回</a></h3>'''
+
+#跳转到签退页
+@app.route('/unsign', methods=['GET'])
+def singnout_form():
+    return '''<form action="/unsign" method="post">
+              <h3 style="text-align:center">签退页</3>
+              <p>域账号 <input name="username" /></p>
+              <p>密码 <input name="password" type="password" /></p>
+              <p>动态密钥 <input name="key" /></p>
+              <p><button type="submit">Submit</button></p>
+            '''
+
+#签退
+@app.route('/unsign', methods=['POST'])
+def sign_out():
+    # 需要从request对象读取表单内容：
+    username = request.form['username']
+    password = request.form['password']
+    key = request.form['key']
+    mq_s = Mq_s('kafka.sunqb.com:9092', username+';'+password+';'+key+';2')
+    print mq_s.producer_msg()
+    return '''<h3>签退成功，<a href='/'>点此返回</a></h3>'''
 
 @app.route('/hello/')
 @app.route('/hello/<name>')

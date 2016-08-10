@@ -10,7 +10,7 @@ from kafka.errors import KafkaError
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-#log.basicConfig(level=log.DEBUG)
+log.basicConfig(level=log.DEBUG)
 class Mq_s(object):
 
     def __init__(self, serverlist, msg):
