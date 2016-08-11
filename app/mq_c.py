@@ -4,6 +4,7 @@
 import sys
 import logging as log
 from kafka import KafkaConsumer
+from attendance import Attendance
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -22,7 +23,11 @@ def consumer_msg(serverlist):
         password = msglist[1]
         key = msglist[2]
         type = msglist[3]
-        # TODO 调用签到代码，这里需要将生产者配置为必须返回ack模式，否则无法收到客户端回执
+        oa = Attendance(username, password, key)
+        if (type == '1'):
+            print oa.singin()
+        else:
+            print oa.singout()
 
 
 if __name__ == '__main__':

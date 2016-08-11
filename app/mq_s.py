@@ -10,8 +10,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 # 日志配置
-logger = log.getLogger()
-logger.setLevel(log.DEBUG)
+log.basicConfig(level=log.ERROR)
 
 
 class Mq_s(object):
@@ -27,7 +26,7 @@ class Mq_s(object):
             producer.close(timeout=60)
             return "success"
         except Exception as e:
-            logger.error(e)
+            log.error(e)
             return "error"
 
 # if __name__ == '__main__':
