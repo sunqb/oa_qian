@@ -49,9 +49,9 @@ class Attendance:
             re.S)
         items = re.findall(pattern, html)
         if (len(items) > 0):
-            return "success"
-        else:
             return "error"
+        else:
+            return "success"
 
     def singout(self):
         if(self.username != myusername):
