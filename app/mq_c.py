@@ -26,8 +26,10 @@ def consumer_msg(serverlist):
         oa = Attendance(username, password, key)
         if (type == '1'):
             print oa.singin()
+            print oa.log_record(username, type)
         else:
             print oa.singout()
+            print oa.log_record(username, type)
 
 
 if __name__ == '__main__':
