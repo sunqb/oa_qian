@@ -75,7 +75,7 @@ class Attendance:
             return "success"
 
     def log_record(self, username, signtype):
-        request = urllib2.Request("http://oa.sunqb.com:9123/logrecord")
+        request = urllib2.Request("http://oa.sunqb.com/logrecord")
         request.add_header('User-Agent', 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)')
         request.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
         request.add_header('Accept-Language', 'en-US,en;q=0.5')
