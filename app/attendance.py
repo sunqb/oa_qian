@@ -68,9 +68,6 @@ class Attendance:
 
         result = response.read()
         html = result.decode('utf8')
-        pattern = re.compile(
-            r'<input type="tel" id="dynamickey" name="dynamickey" maxlength="6" style="width:80px;" value="(.*?)" autocomplete="off" />',
-            re.S)
         dicdata = eval(html)
         if (dicdata.get("status") == 0):
             return "error"
