@@ -1,28 +1,35 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-#重新设置编码
+# 重新设置编码
 import sys
 import logging as log
-from pykafka import KafkaClient
+from kafka import KafkaProducer
 
+# 编码处理
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-log.basicConfig(level=log.DEBUG)
+# 日志配置
+log.basicConfig(level=log.ERROR)
 
-def connectServer(hostlist):
-    client = KafkaClient(hosts=hostlist)
-    return client
 
-def producer_msg(client):
-    topic = client.topics['oa_qian']
-    print topic
-    producer = topic.get_producer()
-    producer.produce('test message ')
-    #for i in range(4):
-    #    producer.produce('test message '+str(i ** 2))
-    #producer.produce(['test message ' + str(i ** 2) for i in range(4)])
+class Mq_s(object):
+    def __init__(self, serverlist, msg):
+        self.serverlist = serverlist;
+        self.msg = msg
 
-if __name__ == '__main__':
-    client = connectServer('kafka.sunqb.com:9092')
-    producer_msg(client)
+    def producer_msg(self):
+        try:
+            producer = KafkaProducer(bootstrap_servers=[self.serverlist])
+            producer.send('oa_qian', (self.msg).encode("utf-8"))
+            producer.flush()
+            producer.close(timeout=60)
+            return "success"
+        except Exception as e:
+            log.error(e)
+            return "error"
+
+# if __name__ == '__main__':
+# test code
+# mq_s = Mq_s('kafka.sunqb.com:9092', 'sunqingbiao;sun;890897;1')
+# mq_s.producer_msg()

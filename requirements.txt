@@ -20,4 +20,5 @@ html5lib==1.0b3
 itsdangerous==0.24
 six==1.8.0
 awesome-slugify==1.6
-pykafka==2.4.0
+kafka-python==1.2.3
+mysql-connector-python-rf==2.1.3
